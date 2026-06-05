@@ -8,6 +8,46 @@
 # las herramientas a la venta y sus unidades disponibles en tiempo real.
 
 
+
+#Inventario donde se van a guardar las herramientas
+inventario = {
+
+}
+
+
+#Funcion inicial para que el usuario carge herramientas y cantidades antes de empezar el programa
+def carga_inicial():
+
+    while True:
+        try:
+            cantidad = int(input("\nCuantas herramientas quiere cargar?\n"))
+
+        except ValueError:
+            print("\nError, solo use numeros por favor\n")
+        
+        else:
+            #Carga de herramientas una vez tenemos la cantidad validada
+            for i in range(cantidad):
+
+                while True:
+                    try:
+                        nombre_herramienta = input("Herramienta: ")
+                        herramienta_stock_inicial = int(input("Cantidad: "))
+                    
+                    except ValueError:
+                        print("\nCantidad invalida, use numeros\n")
+                    
+                    else:
+                        inventario[nombre_herramienta] = herramienta_stock_inicial
+                        break #para salir de while que mantiene al usuario cargando cantidades
+        break #para salir del while de carga de herramientas y emepzar con el programa
+    
+
+
+
+
+
+
 #MENU
 
 
@@ -19,12 +59,12 @@ def menu_principal():
             eleccion = int(input("1) Carga de herramientas\n2) Visualizar inventario\n3) Consulta de stock\n4) Reporte de agotados\n5) Alta de nuevo producto\n6) Actualizacion de stock (compra / venta)\n7) Salir\n"))
 
         except ValueError:
-            print("Por favor solo use numeros")
+            print("Por favor solo use numeros\n")
 
         else:
             return eleccion #el usuario todavia puede devolver una opcion fuera de rango
-            break
-        
+            
+
 
 
 
@@ -109,3 +149,14 @@ def menu_principal():
 
 
 #SALIR
+
+
+
+
+
+
+
+
+#Programa
+
+menu_principal()
