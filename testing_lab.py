@@ -1,18 +1,17 @@
+def menu_principal():
 
-def devolverNumero():
-    intentos = 1
     while True:
         try:
-            numero = int(input())
-        
+
+            eleccion = int(input("1) Carga de herramientas\n2) Visualizar inventario\n3) Consulta de stock\n4) Reporte de agotados\n5) Alta de nuevo producto\n6) Actualizacion de stock (compra / venta)\n7) Salir\n"))
+
         except ValueError:
-            print("eso no es un numero\n")
+            print("Por favor solo use numeros\n")
 
         else:
-            return numero
-        
-        finally:
-            print(f"intento n°{intentos}")
-            intentos += 1
+            return eleccion #el usuario todavia puede devolver una opcion fuera de rango
+            
 
-devolverNumero()
+
+
+menu_principal()

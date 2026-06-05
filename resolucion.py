@@ -38,10 +38,11 @@ def carga_inicial():
                         print("\nCantidad invalida, use numeros\n")
                     
                     else:
+
                         inventario[nombre_herramienta] = herramienta_stock_inicial
                         break #para salir de while que mantiene al usuario cargando cantidades
         break #para salir del while de carga de herramientas y emepzar con el programa
-    
+
 
 
 
@@ -159,4 +160,5 @@ def menu_principal():
 
 #Programa
 
+carga_inicial()
 menu_principal()
