@@ -195,6 +195,47 @@ def nuevo_producto():
 
 #ACTUALIZACION DE STOCK (COMPRA/VENTA)
 
+def compra_venta():
+    while True:
+        try:
+            eleccion = int(input("1) Venta\n2) Compra"))
+            if eleccion not in (1, 2):
+
+                raise IndexError("fuera de rango")
+
+            
+        except ValueError:
+            print("\nError, use los numeros 1 o 2\n")
+
+        except IndexError:
+            print("\nOpcion fuera de rango\n")
+        
+        else:
+            if eleccion == 1:
+                print(inventario)
+
+                try:
+                    herramienta_vendida = input("herramienta vendida: ")
+
+                    if herramienta_vendida not in inventario:
+                        raise ValueError("herramienta no encontrada")
+                    
+                    cantidad_vendida = int(input("Cantidad vendida: "))
+                    if cantidad_vendida > inventario[herramienta_vendida]:
+                        raise ValueError("stock insuficiente")
+
+                except ValueError as e:
+                    if e == "herramienta no encontrada":
+                        print("\nError. No se encontró esa herramienta\n")
+                    elif e == "stock insuficiente":
+                        print("\nNo hay suficiente stock\n")
+                    else:
+                        print("error desconocido")
+                else:
+                    inventario[herramienta_vendida] -= cantidad_vendida
+                    break
+
+                    
 
 
 
