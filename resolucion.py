@@ -144,6 +144,14 @@ def consulta():
 
 #REPORTE DE AGOTADOS
 
+def reporte_de_agotados():
+    agotados = False
+    for herramienta, cantidad in inventario.items():
+        if cantidad == 0:
+            print(f"{herramienta}")
+            agotados = True
+    if agotados == False:
+        print("\nNo hay herramientas sin stock\n")
 
 
 
@@ -156,6 +164,16 @@ def consulta():
 
 #ALTA DE NUEVO PRODUCTO
 
+def nuevo_producto():
+    try:
+        nuevo_producto = input("Nueva herramienta: ")
+        if nuevo_producto in inventario:
+            raise ValueError("duplicado")
+    except ValueError as e:
+        if e == "duplicado":
+            print("\nError, herramienta ya en stock\n")
+        else:
+            print("\nError\n")
 
 
 
