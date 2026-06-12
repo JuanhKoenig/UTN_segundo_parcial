@@ -112,7 +112,24 @@ def ver_inventario():
 
 #CONSTULTA DE STOCK 
 
+def consulta():
+    
+    while True:
+        try:
+            buscar_herramienta = input("\nBuscar: ")
+            if not (buscar_herramienta in inventario):
+                raise ValueError("no se encuentra")
 
+        except ValueError as e:
+            if e == "no se encuentra":
+                print(f"\nNo se encuentra la herramienta {buscar_herramienta}\n")
+                break
+
+            else:
+                print("\nerror de entrada\n")
+        else:
+            print(f"{buscar_herramienta} : {inventario[buscar_herramienta]}")
+                
 
 
 
