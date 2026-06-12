@@ -32,10 +32,19 @@ def carga_inicial():
                 while True:
                     try:
                         nombre_herramienta = input("Herramienta: ")
+
+                        if nombre_herramienta in inventario:
+                            raise ValueError("duplicado")
+
                         herramienta_stock_inicial = int(input("Cantidad: "))
+
                     
-                    except ValueError:
-                        print("\nCantidad invalida, use numeros\n")
+                    except ValueError as e:
+
+                        if str(e) == "duplicado":
+                            print("\nError, herramienta ya cargada\n")
+                        else:
+                            print("\nCantidad invalida, use numeros\n")
                     
                     else:
 
@@ -162,3 +171,4 @@ def menu_principal():
 
 carga_inicial()
 menu_principal()
+
