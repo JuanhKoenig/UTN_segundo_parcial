@@ -88,6 +88,8 @@ def menu_principal():
 #CARGA DE HERRAMIENTAS
 
 
+#creo que puedo usar carga_inicial()
+
 
 
 
@@ -98,7 +100,9 @@ def menu_principal():
 
 #VISUALIZAR INVENTARIO
 
-
+def ver_inventario():
+    for herramienta, cantidad in inventario.items():
+        print(f"{herramienta} : {cantidad}")
 
 
 
