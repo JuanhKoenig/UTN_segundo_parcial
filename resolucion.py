@@ -201,7 +201,7 @@ def compra_venta():
             eleccion = int(input("1) Venta\n2) Compra"))
             if eleccion not in (1, 2):
 
-                raise IndexError("fuera de rango")
+                raise IndexError
 
             
         except ValueError:
@@ -221,6 +221,7 @@ def compra_venta():
                         raise ValueError("herramienta no encontrada")
                     
                     cantidad_vendida = int(input("Cantidad vendida: "))
+
                     if cantidad_vendida > inventario[herramienta_vendida]:
                         raise ValueError("stock insuficiente")
 
@@ -233,6 +234,28 @@ def compra_venta():
                         print("error desconocido")
                 else:
                     inventario[herramienta_vendida] -= cantidad_vendida
+                    break
+            else:
+                print(inventario)
+
+                try:
+                    herramienta_comprada = input("Herramienta comprada: ")
+
+                    if herramienta_comprada not in inventario:
+                        raise ValueError("herramienta no encontrada")
+                    
+                    cantidad_comprada = int(input("Cantidad: "))
+                        
+
+                except ValueError as e:
+                    
+                    if e == "herramienta no encontrada":
+                        print("\nError. herramienta no registrada en stock, cargala en \"Alta de nuevo producto\"\n")
+
+                    else:
+                        print("\nError desconocido\n")
+                else:
+                    inventario[herramienta_comprada] += cantidad_comprada
                     break
 
                     
