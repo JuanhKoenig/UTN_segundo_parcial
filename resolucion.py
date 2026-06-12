@@ -121,7 +121,7 @@ def consulta():
                 raise ValueError("no se encuentra")
 
         except ValueError as e:
-            if e == "no se encuentra":
+            if str(e) == "no se encuentra":
                 print(f"\nNo se encuentra la herramienta {buscar_herramienta}\n")
                 break
 
@@ -167,13 +167,22 @@ def reporte_de_agotados():
 def nuevo_producto():
     try:
         nuevo_producto = input("Nueva herramienta: ")
+
         if nuevo_producto in inventario:
             raise ValueError("duplicado")
+        
+        cantidad = int(input("Cantidad: "))
+
     except ValueError as e:
-        if e == "duplicado":
+        if str(e) == "duplicado":
             print("\nError, herramienta ya en stock\n")
         else:
             print("\nError\n")
+    else:
+
+        inventario[nuevo_producto] = cantidad
+        
+
 
 
 
