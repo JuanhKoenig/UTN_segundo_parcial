@@ -8,9 +8,7 @@
 # las herramientas a la venta y sus unidades disponibles en tiempo real.
 
 
-
-
-
+#MENU
 def menu_principal():
 
     while True:
@@ -30,78 +28,61 @@ def menu_principal():
             return eleccion 
 
 
-
+#CARGA INICIAL
 def carga_inicial(inventario):
 
+    if inventario == []:
 
-    while True:
-        try:
-            cantidad = int(input("\nCuantas herramientas quiere cargar?\n"))
+        while True:
+            try:
+                cantidad = int(input("\nCuantas herramientas quiere cargar?\n"))
 
-            if cantidad < 0:
-                raise ValueError("negativo")
+                if cantidad < 0:
+                    raise ValueError("negativo")
 
-        except ValueError as e:
-            if str(e) == "negativo":
-                print("\nError, use numeros positivos\n")
+            except ValueError as e:
+                if str(e) == "negativo":
+                    print("\nError, use numeros positivos\n")
+                else:
+                    print("\nError, solo use numeros por favor\n")
+
+            
             else:
-                print("\nError, solo use numeros por favor\n")
+                #Carga de herramientas una vez tenemos la cantidad validada
+                for i in range(cantidad):
 
-        
-        else:
-            #Carga de herramientas una vez tenemos la cantidad validada
-            for i in range(cantidad):
+                    while True:
+                        try:
+                            nombre_herramienta = input("\nHerramienta: ")
 
-                while True:
-                    try:
-                        nombre_herramienta = input("\nHerramienta: ")
+                            if nombre_herramienta.strip() == "":
+                                raise ValueError("nombre vacio")
 
-                        for item in inventario:
-                            if item["herramienta"] == nombre_herramienta:
-                                raise ValueError("duplicado")
+                            for item in inventario:
+                                if item["herramienta"] == nombre_herramienta:
+                                    raise ValueError("duplicado")
 
-                        herramienta_stock_inicial = int(input("Cantidad: "))
+                            herramienta_stock_inicial = int(input("Cantidad: "))
 
-                    
-                    except ValueError as e:
+                        
+                        except ValueError as e:
 
-                        if str(e) == "duplicado":
-                            print("\nError, herramienta ya cargada\n")
+                            if str(e) == "duplicado":
+                                print("\nError, herramienta ya cargada\n")
+
+                            elif str(e) == "nombre vacio":
+                                print("\nNo se permiten nombres vacios\n")
+
+                            else:
+                                print("\nCantidad invalida, use numeros\n")
+                        
                         else:
-                            print("\nCantidad invalida, use numeros\n")
-                    
-                    else:
 
-                        inventario.append({"herramienta": nombre_herramienta, "cantidad": herramienta_stock_inicial})
-                        break #para salir de while que mantiene al usuario cargando cantidades
-            return inventario #para salir del while de carga de herramientas y emepzar con el programa
-
-
-
-
-
-
-
-#MENU
-
-
-
-
-
-
-
-
-
-
-
-
-#CARGA DE HERRAMIENTAS
-
-
-#creo que puedo usar carga_inicial()
-
-
-
+                            inventario.append({"herramienta": nombre_herramienta, "cantidad": herramienta_stock_inicial})
+                            break #para salir de while que mantiene al usuario cargando cantidades
+                return inventario #para salir del while de carga de herramientas y emepzar con el programa
+    else:
+        print("\nNo se puede volver a usar la carga inicial, para cargar nuevas herramientas use la opcion 5\n")
 
 
 
@@ -110,10 +91,12 @@ def carga_inicial(inventario):
 #VISUALIZAR INVENTARIO
 
 def ver_inventario(inventario):
-        
-    for item in inventario:
-        print(f"{item["herramienta"]} : {item["cantidad"]}\n")
-
+    
+    if inventario != []:
+        for item in inventario:
+            print(f"{item["herramienta"]} : {item["cantidad"]}\n")
+    else:
+        print("\nNo se han cargado herramientas, use la opcion de carga inicial\n")
 
 
 
@@ -146,14 +129,6 @@ def consulta(inventario):
 
 
 
-
-
-
-
-
-
-
-
 #REPORTE DE AGOTADOS
 
 def reporte_de_agotados(inventario):
@@ -164,12 +139,6 @@ def reporte_de_agotados(inventario):
             agotados = True
     if agotados == False:
         print("\nNo hay herramientas sin stock\n")
-
-
-
-
-
-
 
 
 
@@ -208,13 +177,6 @@ def nuevo_producto(inventario):
 
         inventario.append({"herramienta": nuevo_producto, "cantidad": cantidad})
         
-
-
-
-
-
-
-
 
 
 
@@ -315,26 +277,6 @@ def compra_venta(inventario):
                         if item["herramienta"] == herramienta_comprada:
                             item["cantidad"] += cantidad_comprada
                     break
-
-                    
-
-
-
-
-
-
-
-
-
-
-
-#SALIR
-
-
-
-
-
-
 
 
 
