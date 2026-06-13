@@ -8,7 +8,29 @@
 # las herramientas a la venta y sus unidades disponibles en tiempo real.
 
 
-#Funcion inicial para que el usuario carge herramientas y cantidades antes de empezar el programa
+
+
+
+def menu_principal():
+
+    while True:
+        try:
+
+            eleccion = int(input("1) Carga de herramientas\n2) Visualizar inventario\n3) Consulta de stock\n4) Reporte de agotados\n5) Alta de nuevo producto\n6) Actualizacion de stock (compra / venta)\n7) Salir\n"))
+
+            if eleccion not in range(1,8):
+                raise IndexError
+
+        except ValueError:
+            print("Por favor solo use numeros\n")
+        except IndexError:
+            print("\nOpcion fuera de rango\n")
+
+        else:
+            return eleccion 
+
+
+
 def carga_inicial(inventario):
 
 
@@ -63,26 +85,6 @@ def carga_inicial(inventario):
 #MENU
 
 
-def menu_principal():
-
-    while True:
-        try:
-
-            eleccion = int(input("1) Carga de herramientas\n2) Visualizar inventario\n3) Consulta de stock\n4) Reporte de agotados\n5) Alta de nuevo producto\n6) Actualizacion de stock (compra / venta)\n7) Salir\n"))
-
-            if eleccion not in range(1,8):
-                raise IndexError
-
-        except ValueError:
-            print("Por favor solo use numeros\n")
-        except IndexError:
-            print("\nOpcion fuera de rango\n")
-
-        else:
-            return eleccion 
-
-            
-
 
 
 
@@ -108,11 +110,9 @@ def menu_principal():
 #VISUALIZAR INVENTARIO
 
 def ver_inventario(inventario):
-    
-    # for herramienta, cantidad in inventario.items():
-    #     print(f"\n{herramienta} : {cantidad}\n")
-        for item in inventario:
-            print(f"\n{item["herramienta"]} : {item["cantidad"]}\n")
+        
+    for item in inventario:
+        print(f"{item["herramienta"]} : {item["cantidad"]}\n")
 
 
 
@@ -160,7 +160,7 @@ def reporte_de_agotados(inventario):
     agotados = False
     for item in inventario:
         if item["cantidad"] == 0:
-            print(f"{item}")
+            print(f"\n{item["herramienta"]}\n")
             agotados = True
     if agotados == False:
         print("\nNo hay herramientas sin stock\n")
@@ -180,14 +180,17 @@ def nuevo_producto(inventario):
     try:
         nuevo_producto = input("Nueva herramienta: ")
 
+        if nuevo_producto == "":
+            raise ValueError("nombre vacio")
+
         for item in inventario:
             if item["herramienta"] == nuevo_producto:
                 raise ValueError("duplicado")
 
-        if nuevo_producto == "":
-            raise ValueError("nombre vacio")
         
         cantidad = int(input("Cantidad: "))
+        if cantidad < 0:
+            raise ValueError("negativo")
 
     except ValueError as e:
         if str(e) == "duplicado":
@@ -195,11 +198,15 @@ def nuevo_producto(inventario):
 
         elif str(e) == "nombre vacio":
             print("\nError, no se permiten nombres vacios\n")
+        
+        elif str(e) == "negativo":
+            print("\nError, no se puede poner numeros negativos como stock\n")
+            
         else:
             print("\nError, cantidad ingresada invalida, use numeros.\n")
     else:
 
-        inventario[nuevo_producto] = cantidad
+        inventario.append({"herramienta": nuevo_producto, "cantidad": cantidad})
         
 
 
@@ -235,35 +242,62 @@ def compra_venta(inventario):
 
                 try:
                     herramienta_vendida = input("herramienta vendida: ")
-
-                    if herramienta_vendida not in inventario:
+                    encontrado = False
+                    for item in inventario:
+                            if item["herramienta"] != herramienta_vendida:
+                                encontrado =False
+                            else:
+                                cantidad_en_stock = item["cantidad"]
+                                encontrado = True
+                                break
+                    if encontrado == False:
                         raise ValueError("herramienta no encontrada")
                     
                     cantidad_vendida = int(input("Cantidad vendida: "))
 
-                    if cantidad_vendida > inventario[herramienta_vendida]:
+                    if cantidad_vendida < 0:
+                        raise ValueError("valor negativo")
+
+                    if cantidad_vendida > cantidad_en_stock:
                         raise ValueError("stock insuficiente")
 
                 except ValueError as e:
                     if str(e) == "herramienta no encontrada":
                         print("\nError. No se encontró esa herramienta\n")
+
                     elif str(e) == "stock insuficiente":
                         print("\nNo hay suficiente stock\n")
+
+                    elif str(e) == "valor negativo":
+                        print("\nError, no se puede usar un valor negativo")
+
                     else:
                         print("error desconocido")
                 else:
-                    inventario[herramienta_vendida] -= cantidad_vendida
+                    for item in inventario:
+                        if item["herramienta"] == herramienta_vendida:
+                            item["cantidad"] -= cantidad_vendida
                     break
             else:
                 print(inventario)
 
                 try:
                     herramienta_comprada = input("Herramienta comprada: ")
+                    encontrado = False
+                    for item in inventario:
+                        if item["herramienta"] != herramienta_comprada:
+                            encontrado = False
+                        else:
+                            encontrado = True
+                            break
 
-                    if herramienta_comprada not in inventario:
+                            
+                    if encontrado == False:
                         raise ValueError("herramienta no encontrada")
                     
                     cantidad_comprada = int(input("Cantidad: "))
+                    if cantidad_comprada < 0:
+                        raise ValueError("valor negativo")
                         
 
                 except ValueError as e:
@@ -271,10 +305,15 @@ def compra_venta(inventario):
                     if str(e) == "herramienta no encontrada":
                         print("\nError. herramienta no registrada en stock, cargala en \"Alta de nuevo producto\"\n")
 
+                    elif str(e) == "valor negativo":
+                        print("\nError, no se puede usar un valor negativo\n")
+
                     else:
                         print("\nError desconocido\n")
                 else:
-                    inventario[herramienta_comprada] += cantidad_comprada
+                    for item in inventario:
+                        if item["herramienta"] == herramienta_comprada:
+                            item["cantidad"] += cantidad_comprada
                     break
 
                     
@@ -306,14 +345,15 @@ def programa():
 
     ]
 
-    carga_inicial(inventario)
-
     while True:
 
         eleccion = menu_principal()
 
         if eleccion == 7:
             break
+
+        elif eleccion == 1:
+            carga_inicial(inventario)
         
         elif eleccion == 2:
             ver_inventario(inventario)
