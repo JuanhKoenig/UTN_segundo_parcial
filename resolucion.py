@@ -34,8 +34,6 @@ def carga_inicial(inventario):
                     try:
                         nombre_herramienta = input("\nHerramienta: ")
 
-                        # if nombre_herramienta in inventario:
-                        # if any(item["herramienta"] == nombre_herramienta for item in inventario):
                         for item in inventario:
                             if item["herramienta"] == nombre_herramienta:
                                 raise ValueError("duplicado")
@@ -52,7 +50,6 @@ def carga_inicial(inventario):
                     
                     else:
 
-                        # inventario[nombre_herramienta] = herramienta_stock_inicial
                         inventario.append({"herramienta": nombre_herramienta, "cantidad": herramienta_stock_inicial})
                         break #para salir de while que mantiene al usuario cargando cantidades
             return inventario #para salir del while de carga de herramientas y emepzar con el programa
@@ -129,7 +126,7 @@ def consulta(inventario):
     while True:
         try:
             buscar_herramienta = input("\nBuscar: ")
-            if not (buscar_herramienta in inventario):
+            if not any(item["herramienta"] == buscar_herramienta for item in inventario):
                 raise ValueError("no se encuentra")
 
         except ValueError as e:
@@ -140,7 +137,9 @@ def consulta(inventario):
             else:
                 print("\nerror de entrada\n")
         else:
-            print(f"{buscar_herramienta} : {inventario[buscar_herramienta]} en stock")
+            for item in inventario:
+                if item["herramienta"] == buscar_herramienta:
+                    print(f"\n{buscar_herramienta} : {item["cantidad"]} en stock\n")
             break
                 
 
@@ -159,9 +158,9 @@ def consulta(inventario):
 
 def reporte_de_agotados(inventario):
     agotados = False
-    for herramienta, cantidad in inventario.items():
-        if cantidad == 0:
-            print(f"{herramienta}")
+    for item in inventario:
+        if item["cantidad"] == 0:
+            print(f"{item}")
             agotados = True
     if agotados == False:
         print("\nNo hay herramientas sin stock\n")
@@ -181,8 +180,9 @@ def nuevo_producto(inventario):
     try:
         nuevo_producto = input("Nueva herramienta: ")
 
-        if nuevo_producto in inventario:
-            raise ValueError("duplicado")
+        for item in inventario:
+            if item["herramienta"] == nuevo_producto:
+                raise ValueError("duplicado")
 
         if nuevo_producto == "":
             raise ValueError("nombre vacio")
