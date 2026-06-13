@@ -68,11 +68,17 @@ def menu_principal():
 
             eleccion = int(input("1) Carga de herramientas\n2) Visualizar inventario\n3) Consulta de stock\n4) Reporte de agotados\n5) Alta de nuevo producto\n6) Actualizacion de stock (compra / venta)\n7) Salir\n"))
 
+            if eleccion not in range(1,8):
+                raise IndexError
+
         except ValueError:
             print("Por favor solo use numeros\n")
+        except IndexError:
+            print("\nOpcion fuera de rango\n")
 
         else:
-            return eleccion #el usuario todavia puede devolver una opcion fuera de rango
+            return eleccion 
+
             
 
 
@@ -97,10 +103,10 @@ def menu_principal():
 
 
 
-
 #VISUALIZAR INVENTARIO
 
 def ver_inventario():
+
     for herramienta, cantidad in inventario.items():
         print(f"{herramienta} : {cantidad}")
 
@@ -279,8 +285,34 @@ def compra_venta():
 
 
 
-#Programa
+
+
+def programa():
+
+
+    while True:
+
+        eleccion = menu_principal()
+
+        if eleccion == 7:
+            break
+        
+        elif eleccion == 2:
+            ver_inventario()
+        
+        elif eleccion == 3:
+            consulta()
+
+        elif eleccion == 4:
+            reporte_de_agotados()
+        
+        elif eleccion == 5:
+            nuevo_producto()
+
+        elif eleccion == 6:
+            compra_venta()
+
 
 carga_inicial()
-menu_principal()
+programa()
 
