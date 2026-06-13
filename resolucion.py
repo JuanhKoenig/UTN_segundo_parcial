@@ -8,15 +8,9 @@
 # las herramientas a la venta y sus unidades disponibles en tiempo real.
 
 
-
-#Inventario donde se van a guardar las herramientas
-inventario = {
-
-}
-
-
 #Funcion inicial para que el usuario carge herramientas y cantidades antes de empezar el programa
-def carga_inicial():
+def carga_inicial(inventario):
+
 
     while True:
         try:
@@ -50,7 +44,7 @@ def carga_inicial():
 
                         inventario[nombre_herramienta] = herramienta_stock_inicial
                         break #para salir de while que mantiene al usuario cargando cantidades
-        break #para salir del while de carga de herramientas y emepzar con el programa
+            return inventario #para salir del while de carga de herramientas y emepzar con el programa
 
 
 
@@ -105,7 +99,7 @@ def menu_principal():
 
 #VISUALIZAR INVENTARIO
 
-def ver_inventario():
+def ver_inventario(inventario):
 
     for herramienta, cantidad in inventario.items():
         print(f"{herramienta} : {cantidad}")
@@ -118,7 +112,7 @@ def ver_inventario():
 
 #CONSTULTA DE STOCK 
 
-def consulta():
+def consulta(inventario):
     
     while True:
         try:
@@ -128,13 +122,14 @@ def consulta():
 
         except ValueError as e:
             if str(e) == "no se encuentra":
-                print(f"\nNo se encuentra la herramienta {buscar_herramienta}\n")
+                print(f"\nNo se encuentra la herramienta \"{buscar_herramienta}\"\n")
                 break
 
             else:
                 print("\nerror de entrada\n")
         else:
             print(f"{buscar_herramienta} : {inventario[buscar_herramienta]}")
+            break
                 
 
 
@@ -150,7 +145,7 @@ def consulta():
 
 #REPORTE DE AGOTADOS
 
-def reporte_de_agotados():
+def reporte_de_agotados(inventario):
     agotados = False
     for herramienta, cantidad in inventario.items():
         if cantidad == 0:
@@ -170,7 +165,7 @@ def reporte_de_agotados():
 
 #ALTA DE NUEVO PRODUCTO
 
-def nuevo_producto():
+def nuevo_producto(inventario):
     try:
         nuevo_producto = input("Nueva herramienta: ")
 
@@ -183,7 +178,7 @@ def nuevo_producto():
         if str(e) == "duplicado":
             print("\nError, herramienta ya en stock\n")
         else:
-            print("\nError\n")
+            print("\nError, cantidad ingresada invalida, use numeros.\n")
     else:
 
         inventario[nuevo_producto] = cantidad
@@ -201,10 +196,10 @@ def nuevo_producto():
 
 #ACTUALIZACION DE STOCK (COMPRA/VENTA)
 
-def compra_venta():
+def compra_venta(inventario):
     while True:
         try:
-            eleccion = int(input("1) Venta\n2) Compra"))
+            eleccion = int(input("1) Venta\n2) Compra\n"))
             if eleccion not in (1, 2):
 
                 raise IndexError
@@ -232,9 +227,9 @@ def compra_venta():
                         raise ValueError("stock insuficiente")
 
                 except ValueError as e:
-                    if e == "herramienta no encontrada":
+                    if str(e) == "herramienta no encontrada":
                         print("\nError. No se encontró esa herramienta\n")
-                    elif e == "stock insuficiente":
+                    elif str(e) == "stock insuficiente":
                         print("\nNo hay suficiente stock\n")
                     else:
                         print("error desconocido")
@@ -289,6 +284,11 @@ def compra_venta():
 
 def programa():
 
+    inventario = {
+
+    }
+
+    carga_inicial(inventario)
 
     while True:
 
@@ -298,21 +298,20 @@ def programa():
             break
         
         elif eleccion == 2:
-            ver_inventario()
+            ver_inventario(inventario)
         
         elif eleccion == 3:
-            consulta()
+            consulta(inventario)
 
         elif eleccion == 4:
-            reporte_de_agotados()
+            reporte_de_agotados(inventario)
         
         elif eleccion == 5:
-            nuevo_producto()
+            nuevo_producto(inventario)
 
         elif eleccion == 6:
-            compra_venta()
+            compra_venta(inventario)
 
 
-carga_inicial()
 programa()
 
