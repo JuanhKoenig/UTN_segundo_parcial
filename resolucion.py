@@ -63,6 +63,8 @@ def carga_inicial(inventario):
                                     raise ValueError("duplicado")
 
                             herramienta_stock_inicial = int(input("Cantidad: "))
+                            if herramienta_stock_inicial < 0:
+                                raise ValueError("negativo")
 
                         
                         except ValueError as e:
@@ -72,6 +74,9 @@ def carga_inicial(inventario):
 
                             elif str(e) == "nombre vacio":
                                 print("\nNo se permiten nombres vacios\n")
+
+                            elif str(e) == "negativo":
+                                print("\nError, no se permiten stocks negativos en la carga inicial\n")
 
                             else:
                                 print("\nCantidad invalida, use numeros\n")
